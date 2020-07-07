@@ -31,7 +31,7 @@ h1 {
 .action-section {
   margin-left: 20px;
   @media only screen and (max-width: 600px) {
-    padding: 0 10px 0 30px;
+    padding: 0 10px 0 10px;
   }
 }
 
@@ -182,4 +182,8 @@ table.data-analytic-table {
 
 .space-right {
   margin-right: 30px;
+
+  @media only screen and (max-width: 425px) {
+    margin-right: 10px;
+  }
 }
