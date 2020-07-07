@@ -1,1 +1,126 @@
-<p>dice-game works!</p>
+<div class="container">
+
+  <h1 class="header">Dice Game</h1>
+
+  <div class="game-section">
+    <!--result section-->
+    <div>
+      <table class="result-table">
+        <tr>
+          <th>Number</th>
+          <th>Dice 1</th>
+          <th>Dice 2</th>
+          <th>Dice 3</th>
+          <th>Sum</th>
+        </tr>
+        <tr *ngFor="let diceOutcome of diceOutcomeRows">
+          <td class="num-col"><span class="bold">{{diceOutcome.index}}</span></td>
+          <td><span [ngClass]="getDataColor(diceOutcome, 1)">{{diceOutcome.dice1Value}}</span></td>
+          <td><span [ngClass]="getDataColor(diceOutcome, 2)">{{diceOutcome.dice2Value}}</span></td>
+          <td><span [ngClass]="getDataColor(diceOutcome, 3)">{{diceOutcome.dice3Value}}</span></td>
+          <td><span class="sum" [ngClass]="getSumColor(diceOutcome)">{{diceOutcome.sum}}</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!--action section-->
+    <div class="action-section">
+      <div class="section-header space-bottom" *ngIf="!isTimerStarted">Select Time and Start</div>
+      <div class="section-header space-bottom" *ngIf="isTimerStarted">Time left: {{time}} s</div>
+
+      <!--Dice section-->
+      <div class="space-bottom" *ngIf="lastOutcome else defaultDice">
+        <img src="assets/images/dice-{{lastOutcome.dice1Value}}.png" class="dice-img space-right">
+        <img src="assets/images/dice-{{lastOutcome.dice2Value}}.png" class="dice-img space-right">
+        <img src="assets/images/dice-{{lastOutcome.dice3Value}}.png" class="dice-img">
+      </div>
+
+      <ng-template #defaultDice>
+        <div class="space-bottom">
+          <img src="assets/images/dice-1.png" class="dice-img space-right">
+          <img src="assets/images/dice-1.png" class="dice-img space-right">
+          <img src="assets/images/dice-1.png" class="dice-img">
+        </div>
+      </ng-template>
+
+      <!--Time selection-->
+      <div class="space-bottom">
+        <div class="section-header space-bottom-sm">Select Time or Enter Time</div>
+
+        <div class="time-label">
+
+          Time set to: <span>{{refreshSecond}}</span>
+        </div>
+
+        <!--Select section-->
+        <div class="selection-section">
+          <div class="radio-option">
+            <input type="radio" id="10-sec" name="time" value="10" (change)="onTimeChange(10)" #radio>
+            <label for="10-sec">10 Seconds</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="20-sec" name="time" value="20" (change)="onTimeChange(20)" #radio>
+            <label for="20-sec">20 Seconds</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="30-sec" name="time" value="30" (change)="onTimeChange(30)" #radio>
+            <label for="30-sec">30 Seconds</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="60-sec" name="time" value="60" (change)="onTimeChange(60)" #radio>
+            <label for="60-sec">60 Seconds</label>
+          </div>
+        </div>
+
+        <!--Input section-->
+        <div class="input-section">
+          <label for="enterTime">Enter Time: </label>
+          <input type="number" id="enterTime" name="enterTime" class="input-field" #inputTime>
+          <button class="enter-button" (click)="onEnterTime()"
+                  [disabled]="isInputButtonDisabled">Enter
+          </button>
+        </div>
+
+      </div>
+
+      <div class="button-section space-bottom">
+        <button class="action-button start-button"
+                (click)="onStartTimer()" [disabled]="isStartDisabled">Start
+        </button>
+
+        <button class="action-button stop-button" *ngIf="isTimerStarted"
+                (click)="onStopTimer()" [disabled]="!isTimerStarted">Stop
+        </button>
+      </div>
+
+      <!-- data analytic-->
+      <div class="data-analytic-section space-bottom" *ngIf="diceOutcomeRows.length > 0">
+
+        <table class="data-analytic-table">
+          <tr>
+            <th>Small</th>
+            <td class="red">{{smallNum / diceOutcomeRows.length | percent: '.2'}}</td>
+            <td class="red">{{smallNum}}/{{diceOutcomeRows.length}}</td>
+          </tr>
+          <tr>
+            <th>Large</th>
+            <td class="blue">{{largeNum / diceOutcomeRows.length | percent: '.2'}}</td>
+            <td class="blue">{{largeNum}}/{{diceOutcomeRows.length}}</td>
+          </tr>
+          <tr>
+            <th>2 Kind</th>
+            <td class="yellow">{{twoKindNum / diceOutcomeRows.length | percent: '.2'}}</td>
+            <td class="yellow">{{twoKindNum}}/{{diceOutcomeRows.length}}</td>
+          </tr>
+          <tr>
+            <th>3 Kind</th>
+            <td class="green">{{threeKindNum / diceOutcomeRows.length | percent: '.2'}}</td>
+            <td class="green">{{threeKindNum}}/{{diceOutcomeRows.length}}</td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
